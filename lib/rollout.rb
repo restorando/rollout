@@ -178,7 +178,9 @@ class Rollout
   end
 
   def collections
-    Hash[*retrieve_from_storage(collection_key).map{ |collect| [collect.to_sym, @storage.get(collection_key(collect))] }.flatten]
+    retrieve_from_storage(collection_key).each_with_object({}) do |collection_name, obj|
+      obj[collection_name.to_sym] = @storage.get(collection_key(collection_name))
+    end
   end
 
   def retrieve_from_storage(key)
@@ -190,7 +192,9 @@ class Rollout
   end
 
   def feature_collections(feature)
-    Hash[*retrieve_from_storage(collection_feature_key(feature)).map{ |collect| [ collect.to_sym, @storage.get(collection_key(collect)) ] }.flatten]
+    retrieve_from_storage(collection_feature_key(feature)).each_with_object({}) do |collection_name, obj|
+      obj[collection_name.to_sym] = @storage.get(collection_key(collection_name))
+    end
   end
 
   def active?(feature, user = nil)
