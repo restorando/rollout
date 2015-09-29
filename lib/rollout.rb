@@ -178,7 +178,7 @@ class Rollout
   end
 
   def collections
-    Hash[*retrieve_from_storage(collection_key).map{ |collect| [ collect.to_sym, @storage.get(collection_key(collect)) ] }.flatten]
+    Hash[*retrieve_from_storage(collection_key).map{ |collect| [collect.to_sym, @storage.get(collection_key(collect))] }.flatten]
   end
 
   def retrieve_from_storage(key)
