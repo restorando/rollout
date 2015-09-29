@@ -307,9 +307,9 @@ describe "Rollout" do
 
   describe '#clear_collections_from_feature' do
     before do
-      @rollout.define_id_collection(:will_remove,     [200, 205])
-      @rollout.define_id_collection(:will_remove_too, [300, 305])
-      @rollout.add_collection_to_feature(:will_remove,    :my_feature)
+      @rollout.define_id_collection(:will_remove,          [200, 205])
+      @rollout.define_id_collection(:will_remove_too,      [300, 305])
+      @rollout.add_collection_to_feature(:will_remove,     :my_feature)
       @rollout.add_collection_to_feature(:will_remove_too, :my_feature)
     end
 
