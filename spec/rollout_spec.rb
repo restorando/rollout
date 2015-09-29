@@ -280,6 +280,31 @@ describe "Rollout" do
     end
   end
 
+  describe "id collections" do
+    before do
+      @rollout.define_id_collection(:beta_testers, [101, 103])
+    end
+    it "saves the collection" do
+      @rollout.define_id_collection(:my_collection, [101, 102])
+      expect(@rollout.collections).to have(2).items
+    end
+
+    it "is active if the feature is active for a user in a collection" do
+      @rollout.add_collection_to_feature(:beta_testers, :my_feature)
+      expect(@rollout).to be_active(:my_feature, 101)
+    end
+
+    it "is not active if the feature is not active user outside a collection" do
+      @rollout.add_collection_to_feature(:beta_testers, :my_feature)
+      expect(@rollout).to_not be_active(:my_feature, 102)
+    end
+
+    it "retrieves all ids from a specific collection" do
+      expect(@rollout.ids_from_collection(:beta_testers)).to eq %w[101 103]
+    end
+
+  end
+
   describe "#get" do
     before do
       @rollout.activate_percentage(:chat, 10)
