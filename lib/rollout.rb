@@ -178,9 +178,7 @@ class Rollout
   end
 
   def collections
-    retrieve_from_storage(collection_key).each_with_object({}) do |collection_name, obj|
-      obj[collection_name.to_sym] = @storage.get(collection_key(collection_name))
-    end
+    retrieve_users_from_key(collection_key)
   end
 
   def retrieve_from_storage(key)
@@ -192,9 +190,7 @@ class Rollout
   end
 
   def feature_collections(feature)
-    retrieve_from_storage(collection_feature_key(feature)).each_with_object({}) do |collection_name, obj|
-      obj[collection_name.to_sym] = @storage.get(collection_key(collection_name))
-    end
+    retrieve_users_from_key(collection_feature_key(feature))
   end
 
   def active?(feature, user = nil)
@@ -268,6 +264,12 @@ class Rollout
 
     def collection_feature_key(feature)
       "collections_for:#{feature}"
+    end
+
+    def retrieve_users_from_key(storage_key)
+      retrieve_from_storage(storage_key).each_with_object({}) do |collection_name, obj|
+        obj[collection_name.to_sym] = @storage.get(collection_key(collection_name))
+      end
     end
 
     def with_feature(feature)
