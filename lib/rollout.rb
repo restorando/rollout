@@ -167,7 +167,7 @@ class Rollout
   end
 
   def define_id_collection(name, ids = [])
-    @storage.set("collection:#{name}", ids.join(","))
+    @storage.set(collection_key(name), ids.join(","))
     @storage.set(collection_key, (collections.keys | [name.to_sym]).join(","))
   end
 
@@ -178,7 +178,7 @@ class Rollout
   end
 
   def collections
-    Hash[*retrieve_from_storage(collection_key).map{ |collect| [ collect.to_sym, @storage.get("collection:#{collect}") ] }.flatten]
+    Hash[*retrieve_from_storage(collection_key).map{ |collect| [ collect.to_sym, @storage.get(collection_key(collect)) ] }.flatten]
   end
 
   def retrieve_from_storage(key)
@@ -190,7 +190,7 @@ class Rollout
   end
 
   def feature_collections(feature)
-    Hash[*retrieve_from_storage(collection_feature_key(feature)).map{ |collect| [ collect.to_sym, @storage.get("collection:#{collect}") ] }.flatten]
+    Hash[*retrieve_from_storage(collection_feature_key(feature)).map{ |collect| [ collect.to_sym, @storage.get(collection_key(collect)) ] }.flatten]
   end
 
   def active?(feature, user = nil)
