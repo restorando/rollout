@@ -171,6 +171,10 @@ class Rollout
     @storage.set(collection_key, (collections.keys | [name.to_sym]).join(","))
   end
 
+  def clear_collections_from_feature(feature_name) 
+    @storage.del(collection_feature_key(feature_name))
+  end
+
   def add_collection_to_feature(collection, feature)
     with_feature(feature) do |feature|
       @storage.set(collection_feature_key(feature.name), (feature_collections(feature.name).keys | [ collection.to_sym]).join(","))

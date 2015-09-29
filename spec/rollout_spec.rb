@@ -305,6 +305,21 @@ describe "Rollout" do
 
   end
 
+  describe '#clear_collections_from_feature' do
+    before do
+      @rollout.define_id_collection(:will_remove,          [200, 205])
+      @rollout.define_id_collection(:will_remove_too,      [300, 305])
+      @rollout.add_collection_to_feature(:will_remove,     :my_feature)
+      @rollout.add_collection_to_feature(:will_remove_too, :my_feature)
+    end
+
+    it 'deassociate the collection from the feature' do
+      @rollout.clear_collections_from_feature(:my_feature)
+      expect(@rollout).to_not be_active(:my_feature, 200)
+      expect(@rollout).to_not be_active(:my_feature, 300)
+    end
+  end
+
   describe "#get" do
     before do
       @rollout.activate_percentage(:chat, 10)
